@@ -332,25 +332,22 @@ def get_agg_val_dict(_df, target_columns, calc_columns, search='off'):
     return return_dict
 
 
-def add_calc_columns(_df, aggr_value_dict):
+def add_calc_columns(_df, target, aggr_value_dict):
     """
     get_agg_val_dict()と対で使用予定。
     get_agg_val_dictで得た情報を元にoheの統計情報をデータフレームに追加する。
 
     :param _df: データフレーム
+    :param target: aggr_value_dictを作った際に指定したカラム名。最終的なカラム名の一部に利用される。
     :param aggr_value_dict: get_agg_val_dict()の戻り値
     :return: oheの統計情報追加後のデータフレーム
     """
+
     df = _df.copy()
 
+    # target_columns = [columnName for columnName in list(df.columns) if target in columnName]
     add_columns = ['max', 'min', 'mean', 'median']  # 集計項目の追加時は、このリストとseriesを作成しているlambdaに対しても集計処理を追加する。
     dict_keys = list(aggr_value_dict.keys())
-
-    # カラム追加
-    for add_columnsBase in list(aggr_value_dict.values())[0].index:
-
-        for column in add_columns:
-            df[add_columnsBase + '_' + column] = 0
 
     # 各行毎に集計データを追加
     for index, row in df.iterrows():
@@ -370,15 +367,16 @@ def add_calc_columns(_df, aggr_value_dict):
         if calc_df.empty:
             calc_df = aggr_value_dict['none']
 
-        # 算出用リストを集計した_series
+        # 算出用リストを集計したSeries
         add_df = calc_df.apply(lambda x: pd.Series([max(x), min(x), mean(x), median(x)], index=add_columns), axis=1)
 
         # 算出リストを行に追加していく
         for i, v in add_df.stack().iteritems():
-            row[i[0] + '_' + i[1]] = v
 
-        # データフレーム本体に行を挿入していく
-        df.iloc[index] = row
+            if 0 == index:
+                df[target + '_' + i[0] + '_' + i[1]] = 0
+
+            df.at[index, target + '_' + i[0] + '_' + i[1]] = v
 
     return df
 
