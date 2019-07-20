@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='common',
@@ -9,7 +9,7 @@ setup(
     # author_email='hogehoge@fuga.com',
     description='preprocessing for ML/DL',
     # install_requires=['setuptools'],
-    # packages=["topDirectory", "topDirectory.bottomDirectory"],
+    packages=find_packages,
     # entry_points={
     #     'console_scripts': [
     #         'top = topDirectory.top:main',
