@@ -117,7 +117,7 @@ def get_value_set_from_columns(df, column_name_list):
 
     :param df: データフレーム
     :param column_name_list: 対象列のリスト
-    :return: 一意なest
+    :return: 一意なset
     """
 
     return_set = set()
