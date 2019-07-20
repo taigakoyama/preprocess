@@ -405,6 +405,11 @@ def remove_ohe_auto(_df, threshold=0.03):
             print('delete column %s, delete rate %f%%' % (column_name, smaller_rate * 100))
             del df[column_name]
 
+    print('before shape :', _df.shape)
+    print('after  shape :', df.shape)
+
+    return df
+
 
 def remove_outlier(_df, _col_name, _threshold, _sign):
     """
