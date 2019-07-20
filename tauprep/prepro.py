@@ -6,8 +6,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from statistics import mean, median, variance, stdev
 
-from yellowbrick.target import BalancedBinning_reference
-from yellowbrick.features import _rank1_d, _rank2_d
+# from yellowbrick.target import BalancedBinning_reference
+# from yellowbrick.features import _rank1_d, _rank2_d
 
 
 def show_value_counts(df, adviser='off'):

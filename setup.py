@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='common',
+    name='tautil',
     version='1.0.0',
-    url='https://github.com/taungyeon/common.git',
+    url='https://github.com/taungyeon/tautil.git',
     license='Free',
     author='taungyeon',
-    # author_email='hogehoge@fuga.com',
+    author_email='taungyeon.0103@gmail.com',
     description='preprocessing for ML/DL',
     # install_requires=['setuptools'],
     packages=find_packages(),
