@@ -6,7 +6,14 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from statistics import mean, median, variance, stdev
 
-# from yellowbrick.target import BalancedBinning_reference
+
+# from yellowbrick.target import # 2つの値から角度を求めて、配列を返す関数
+# def make_radian_row(pca_result):
+#     rad = []
+#     for r in pca_result:
+#         rad.append(math.atan(r[0]/r[1]))
+#
+#     return rad
 # from yellowbrick.features import _rank1_d, _rank2_d
 
 
@@ -465,5 +472,37 @@ def combine_small_categories(_df, _target_col_name, _use_categories, _other_name
         df[_target_col_name] = df[_target_col_name].replace(column_name, _other_name)
 
     df[_target_col_name] = df[_target_col_name].astype('category')
+
+    return df
+
+
+def get_radian_angle(pca_result):
+    """
+    PCAの結果を基に、各行毎に2つの主成分ベクトルの角度を求めListにして返却する。
+
+    :param pca_result: 2つの特徴量に集約したPCAの結果
+    :return: 2つの特徴量の成す角度を格納したリスト（要素数は引数として渡されるPCAの結果に依存する）
+    """
+    rad = []
+    for r in pca_result:
+        rad.append(math.atan(r[0] / r[1]))
+
+    return rad
+
+
+def add_group_columns(_df, group_by_column, target_columns):
+    df = _df.copy()
+
+    for target in target_columns:
+
+        if isinstance(df[target][0], (int, float, np.number)) and not isinstance(df[target][0], np.uint8):
+            df[target + '_groupby_' + group_by_column + '_mean'] = df.groupby(group_by_column)[target].transform(
+                np.mean)
+            df[target + '_groupby_' + group_by_column + '_sum'] = df.groupby(group_by_column)[target].transform(np.sum)
+            df[target + '_groupby_' + group_by_column + '_max'] = df.groupby(group_by_column)[target].transform(np.max)
+            df[target + '_groupby_' + group_by_column + '_min'] = df.groupby(group_by_column)[target].transform(np.min)
+
+        df[target + '_groupby_' + group_by_column + '_count'] = df.groupby(group_by_column)[target].transform('count')[
+            10]
 
     return df
